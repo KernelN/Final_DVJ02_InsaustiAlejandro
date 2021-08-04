@@ -1,4 +1,7 @@
-﻿public class TankData
-{
+﻿using System;
 
+[Serializable]
+public class TankData
+{
+    public WeaponController cannon;
 }

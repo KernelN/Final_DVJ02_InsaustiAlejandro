@@ -5,7 +5,7 @@ using UnityEngine;
 public class TankController : MonoBehaviour
 {
     public Action tankMoved;
-    internal TankData data;
+    [SerializeField] internal TankData data;
     [SerializeField] Transform head;
     [SerializeField] float movementSpeed;
     [SerializeField] float rotationSpeed;
@@ -45,11 +45,18 @@ public class TankController : MonoBehaviour
     }
     internal void Shoot(Vector3 shootPosition)
     {
+        //if rotation almost over, shoot in direction
+        if (headRotationTimer / headRotationSpeed > 0.5f)
+        {
+            data.cannon.Shoot(shootPosition - head.position);
+        }
+
+        //Rotate Head in direction
         shootPosition = new Vector3(shootPosition.x, head.position.y, shootPosition.z);
         Vector3 shootDirection = shootPosition - head.position;
         Quaternion toRotation = Quaternion.LookRotation(shootDirection, head.up);
         headRotationTimer += Time.deltaTime;
-        head.rotation = Quaternion.Lerp(head.rotation, toRotation, headRotationTimer / headRotationSpeed);
+        head.rotation = Quaternion.Lerp(head.rotation, toRotation, headRotationTimer / headRotationSpeed);       
     }
     #endregion
 }
